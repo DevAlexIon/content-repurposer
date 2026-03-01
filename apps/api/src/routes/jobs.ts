@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { createClient } from '@supabase/supabase-js'
 import { requireAuth } from '../middleware/auth.js'
+import { processJob } from '../services/generate.js'
 
 export const jobsRouter = Router()
 
@@ -98,6 +99,7 @@ jobsRouter.post('/', requireAuth, async (req, res, next) => {
             .update({ credits: profile.credits - 1 })
             .eq('id', req.user!.id)
 
+        processJob(job.id).catch(console.error)
         res.status(201).json({ job })
     } catch (err) {
         next(err)
