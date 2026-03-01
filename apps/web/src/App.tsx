@@ -32,11 +32,14 @@ export default function App() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3001/api/waitlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+      const response = await fetch(
+        "https://content-repurposer-server.onrender.com/api/waitlist",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        },
+      );
 
       if (!response.ok) {
         if (response.status === 409) {
