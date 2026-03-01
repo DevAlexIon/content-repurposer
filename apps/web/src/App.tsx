@@ -14,13 +14,14 @@ export default function App() {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [emailError, setEmailError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateEmail(email)) {
@@ -28,9 +29,32 @@ export default function App() {
       return;
     }
 
-    setEmailError("");
-    setIsSubmitted(true);
-    setEmail("");
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:3001/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        if (response.status === 409) {
+          setEmailError("This email is already on the waitlist!");
+        } else {
+          setEmailError("Something went wrong. Please try again.");
+        }
+        return;
+      }
+
+      setEmailError("");
+      setIsSubmitted(true);
+      setEmail("");
+    } catch {
+      setEmailError("Cannot connect to server. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -177,21 +201,59 @@ export default function App() {
                         type="submit"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="px-8 py-4 bg-linear-to-r from-purple-500 to-pink-500 text-white rounded-lg font-bold shadow-lg hover:shadow-purple-500/50 transition-all"
+                        className="px-8 py-4 bg-linear-to-r cursor-pointer from-purple-500 to-pink-500 text-white rounded-lg font-bold shadow-lg hover:shadow-purple-500/50 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                       >
-                        Get Early Access
+                        {isLoading ? (
+                          <span className="flex items-center gap-2">
+                            <svg
+                              className="animate-spin w-4 h-4"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                            >
+                              <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                              />
+                              <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8v8z"
+                              />
+                            </svg>
+                            Joining...
+                          </span>
+                        ) : (
+                          "Get Early Access"
+                        )}
                       </motion.button>
                     </div>
 
                     {/* Email Error */}
                     {emailError && (
-                      <motion.p
+                      <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-red-400 text-sm"
+                        className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3"
                       >
-                        {emailError}
-                      </motion.p>
+                        <svg
+                          className="w-5 h-5 text-red-400 shrink-0"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        <p className="text-red-300 text-sm">{emailError}</p>
+                      </motion.div>
                     )}
                   </motion.form>
 
