@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import { errorHandler } from './middleware/errorHandler.js'
 import { waitlistRouter } from './routes/waitlist.js'
 import { authRouter } from './routes/auth.js'
+import { jobsRouter } from './routes/jobs.js'
 
 dotenv.config()
 
@@ -19,6 +20,8 @@ app.get('/health', (req, res) => {
 
 app.use('/api/auth', authRouter)
 app.use('/api', waitlistRouter)
+app.use('/api/jobs', jobsRouter)
+
 
 app.use(errorHandler)
 
