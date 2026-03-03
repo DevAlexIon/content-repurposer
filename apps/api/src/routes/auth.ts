@@ -14,10 +14,10 @@ function getSupabase() {
 // POST /api/auth/register
 authRouter.post('/register', async (req, res, next) => {
     try {
-        const { email, password } = req.body
+        const { name, email, password } = req.body
 
-        if (!email || !password) {
-            return res.status(400).json({ error: 'Email and password required' })
+        if (!name || !email || !password) {
+            return res.status(400).json({ error: 'Name, email, and password required' })
         }
 
         const supabase = getSupabase()
@@ -32,10 +32,10 @@ authRouter.post('/register', async (req, res, next) => {
             return res.status(400).json({ error: error.message })
         }
 
-        // Creează profile
         await supabase.from('profiles').insert({
             id: data.user.id,
             email: data.user.email,
+            name: name,
             plan: 'free',
             credits: 3
         })
@@ -66,11 +66,21 @@ authRouter.post('/login', async (req, res, next) => {
             return res.status(401).json({ error: 'Invalid credentials' })
         }
 
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', data.user.id)
+            .single()
+
+
         res.json({
             token: data.session.access_token,
             user: {
                 id: data.user.id,
-                email: data.user.email
+                email: data.user.email,
+                name: profile.name,
+                credits: profile.credits,
+                plan: profile.plan
             }
         })
     } catch (err) {

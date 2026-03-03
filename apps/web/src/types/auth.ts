@@ -1,6 +1,7 @@
 export interface User {
     id: string
     email: string
+    name: string
     plan: 'free' | 'pro'
     credits: number
     created_at: string

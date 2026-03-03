@@ -67,7 +67,6 @@ jobsRouter.post('/', requireAuth, async (req, res, next) => {
             return res.status(400).json({ error: 'input_text or input_url is required' })
         }
 
-        // Verifică credite
         const { data: profile } = await supabase
             .from('profiles')
             .select('credits')
@@ -78,7 +77,6 @@ jobsRouter.post('/', requireAuth, async (req, res, next) => {
             return res.status(402).json({ error: 'No credits remaining' })
         }
 
-        // Creează job
         const { data: job, error } = await supabase
             .from('jobs')
             .insert({
@@ -93,7 +91,6 @@ jobsRouter.post('/', requireAuth, async (req, res, next) => {
 
         if (error) return res.status(500).json({ error: error.message })
 
-        // Scade credit
         await supabase
             .from('profiles')
             .update({ credits: profile.credits - 1 })

@@ -61,7 +61,6 @@ export async function generateContent(
     const openai = getOpenAI()
     const results: Partial<Record<OutputFormat, string>> = {}
 
-    // Rulează toate formatele în paralel
     await Promise.all(
         formats.map(async (format) => {
             const prompt = PROMPTS[format].replace('{{content}}', content)

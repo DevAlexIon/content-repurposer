@@ -1,0 +1,483 @@
+.dash-root {
+  min-height: 100vh;
+  background: #0a0a0f;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.dash-blob-1 {
+  position: fixed;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(
+    circle,
+    rgba(124, 58, 237, 0.08) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dash-blob-2 {
+  position: fixed;
+  bottom: -200px;
+  left: -200px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle,
+    rgba(6, 182, 212, 0.05) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Navbar */
+.dash-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 10, 15, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dash-nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dash-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dash-logo-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.dash-logo-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  font-family: "Sora", sans-serif;
+}
+
+.dash-logo-text span {
+  color: #7c3aed;
+}
+
+.dash-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dash-credits-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 99px;
+  color: #f59e0b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dash-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 99px;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.dash-logout {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  transition:
+    color 0.2s,
+    background 0.2s;
+}
+
+.dash-logout:hover {
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Main */
+.dash-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Header */
+.dash-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.dash-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  font-family: "Sora", sans-serif;
+  margin-bottom: 6px;
+}
+
+.dash-title-name {
+  color: #7c3aed;
+}
+
+.dash-subtitle {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 14px;
+}
+
+.dash-new-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+}
+
+.dash-new-btn:hover {
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
+}
+
+/* Stats */
+.dash-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .dash-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.dash-stat-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: default;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.dash-stat-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.dash-stat-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dash-stat-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  font-family: "Sora", sans-serif;
+}
+
+.dash-stat-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 500;
+}
+
+/* Section header */
+.dash-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.dash-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.dash-section-count {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Jobs */
+.dash-jobs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dash-job-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.dash-job-card:hover,
+.dash-job-card.hovered {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(124, 58, 237, 0.2);
+}
+
+.dash-job-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.dash-job-play {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7c3aed;
+  flex-shrink: 0;
+}
+
+.dash-job-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dash-job-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 3px;
+}
+
+.dash-job-type {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.dash-job-dot {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 12px;
+}
+
+.dash-job-time {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.dash-job-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.dash-job-formats {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.dash-format-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 99px;
+  border: 1px solid;
+}
+
+.dash-job-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dash-job-status-text {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.dash-job-status-text.completed {
+  color: #10b981;
+}
+.dash-job-status-text.processing {
+  color: #f59e0b;
+}
+.dash-job-status-text.failed {
+  color: #ef4444;
+}
+
+.status-icon.completed {
+  color: #10b981;
+}
+.status-icon.processing {
+  color: #f59e0b;
+}
+.status-icon.failed {
+  color: #ef4444;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.dash-job-arrow {
+  color: rgba(255, 255, 255, 0.2);
+  transition:
+    color 0.2s,
+    transform 0.2s;
+}
+
+.dash-job-card:hover .dash-job-arrow {
+  color: rgba(255, 255, 255, 0.5);
+  transform: translateX(2px);
+}
+
+/* Empty state */
+.dash-empty {
+  text-align: center;
+  padding: 60px 20px;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.dash-empty-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+.dash-empty h3 {
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+.dash-empty p {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* CTA Banner */
+.dash-cta-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.08),
+    rgba(239, 68, 68, 0.05)
+  );
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 14px;
+  color: #f59e0b;
+}
+
+.dash-cta-banner strong {
+  color: #fff;
+  font-size: 14px;
+}
+.dash-cta-banner p {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 12px;
+  margin-top: 2px;
+}
+.dash-cta-banner > div {
+  flex: 1;
+}
+
+.dash-upgrade-btn {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}

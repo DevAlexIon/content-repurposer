@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import type { User } from '../types/auth'
+import type { RootState } from './index'
 
 interface AuthState {
     user: User | null
@@ -9,8 +10,8 @@ interface AuthState {
 
 const initialState: AuthState = {
     user: null,
-    token: localStorage.getItem('token'),
-    isAuthenticated: !!localStorage.getItem('token'),
+    token: null,
+    isAuthenticated: false,
 }
 
 export const authSlice = createSlice({
@@ -21,15 +22,21 @@ export const authSlice = createSlice({
             state.user = action.payload.user
             state.token = action.payload.token
             state.isAuthenticated = true
-            localStorage.setItem('token', action.payload.token)
         },
         logout: (state) => {
             state.user = null
             state.token = null
             state.isAuthenticated = false
-            localStorage.removeItem('token')
         },
     },
 })
+
+export const selectIsAuthenticated = (state: RootState) => {
+    return state.auth.isAuthenticated
+}
+
+export const selectUser = (state: RootState) => {
+    return state.auth.user
+}
 
 export const { setCredentials, logout } = authSlice.actions

@@ -19,13 +19,11 @@ export async function processJob(jobId: string) {
     const supabase = getSupabase()
 
     try {
-        // Update status → processing
         await supabase
             .from('jobs')
             .update({ status: 'processing' })
             .eq('id', jobId)
 
-        // Ia jobul din DB
         const { data: job } = await supabase
             .from('jobs')
             .select('*')
@@ -34,7 +32,6 @@ export async function processJob(jobId: string) {
 
         if (!job) throw new Error('Job not found')
 
-        // Ia textul de procesat
         let content = job.input_text
 
         // TODO: dacă e video/audio → transcribe mai întâi
@@ -44,10 +41,8 @@ export async function processJob(jobId: string) {
 
         if (!content) throw new Error('No content to process')
 
-        // Generează cu AI
         const outputs = await generateContent(content, DEFAULT_FORMATS)
 
-        // Salvează rezultatele
         await supabase
             .from('jobs')
             .update({
@@ -59,7 +54,6 @@ export async function processJob(jobId: string) {
     } catch (err) {
         console.error('Job processing error:', err)
 
-        // Marchează ca error
         await supabase
             .from('jobs')
             .update({ status: 'error' })
