@@ -44,6 +44,32 @@ export default function JobResults() {
   const { data, isLoading } = useGetJobQuery(id!);
   const [activeFormat, setActiveFormat] = useState<FormatKey>("linkedin_post");
   const [copied, setCopied] = useState(false);
+  const [exporting, setExporting] = useState(false);
+
+  const handleExportAll = () => {
+    setExporting(true);
+    try {
+      const lines: string[] = [];
+      FORMATS.forEach((f) => {
+        const text = outputs[f.key];
+        if (!text) return;
+        lines.push(`${"=".repeat(50)}`);
+        lines.push(`${f.icon} ${f.label.toUpperCase()}`);
+        lines.push(`${"=".repeat(50)}\n`);
+        lines.push(text);
+        lines.push("\n");
+      });
+      const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `repurposer-${job!.id.slice(0, 8)}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const job = data?.job;
   const outputs = job?.outputs ?? {};
@@ -136,8 +162,18 @@ export default function JobResults() {
               </span>
             </div>
           </div>
-          <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-500/10 border border-purple-500/25 text-purple-300 text-sm font-semibold hover:bg-purple-500/18 transition-all shrink-0">
-            <Download size={14} /> Export All
+          <button
+            onClick={handleExportAll}
+            disabled={exporting}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-500/10 border border-purple-500/25 text-purple-300 text-sm font-semibold hover:bg-purple-500/18 transition-all shrink-0"
+          >
+            {exporting ? (
+              <div className="w-4 h-4 border-2 border-purple-300/30 border-t-purple-300 rounded-full animate-spin" />
+            ) : (
+              <>
+                <Download size={14} /> Export All
+              </>
+            )}
           </button>
         </motion.div>
 

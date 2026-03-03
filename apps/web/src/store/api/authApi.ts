@@ -5,11 +5,11 @@ import type { LoginResponse, LoginRequest, RegisterResponse, RegisterRequest, Me
 export const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         login: builder.mutation<LoginResponse, LoginRequest>({
-            query: (credentials) => ({
-                url: '/api/auth/login',
-                method: 'POST',
-                body: credentials,
-            }),
+            query: (body) => ({ url: '/api/auth/login', method: 'POST', body }),
+            async onQueryStarted(_, { dispatch, queryFulfilled }) {
+                await queryFulfilled
+                dispatch(baseApi.util.invalidateTags(['Jobs']))
+            }
         }),
         register: builder.mutation<RegisterResponse, RegisterRequest>({
             query: (data) => ({
