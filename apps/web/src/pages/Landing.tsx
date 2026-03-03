@@ -204,7 +204,7 @@ export default function Landing() {
                         type="submit"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="px-8 py-4 bg-linear-to-r cursor-pointer from-purple-500 to-pink-500 text-white rounded-lg font-bold shadow-lg hover:shadow-purple-500/50 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                        className="px-8 py-4 bg-linear-to-r from-purple-500 to-pink-500 text-white rounded-lg font-bold shadow-lg hover:shadow-purple-500/50 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                       >
                         {isLoading ? (
                           <span className="flex items-center gap-2">

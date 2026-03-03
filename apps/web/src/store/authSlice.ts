@@ -28,6 +28,9 @@ export const authSlice = createSlice({
             state.token = null
             state.isAuthenticated = false
         },
+        decrementCredits: (state) => {
+            if (state.user) state.user.credits -= 1
+        }
     },
 })
 
@@ -39,4 +42,4 @@ export const selectUser = (state: RootState) => {
     return state.auth.user
 }
 
-export const { setCredentials, logout } = authSlice.actions
+export const { setCredentials, logout, decrementCredits } = authSlice.actions

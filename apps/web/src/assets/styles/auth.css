@@ -95,6 +95,7 @@
 
 .auth-headline-gradient {
   background: linear-gradient(135deg, #a855f7, #ec4899);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -118,6 +119,7 @@
   font-weight: 800;
   font-size: 28px;
   background: linear-gradient(135deg, #a855f7, #ec4899);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 4px;
@@ -197,7 +199,6 @@
   font-family: "DM Sans", sans-serif;
   font-size: 14px;
   font-weight: 500;
-  cursor: pointer;
   border-radius: 8px;
   transition: color 0.2s;
   position: relative;
@@ -234,7 +235,7 @@
   font-family: "DM Sans", sans-serif;
   font-size: 14px;
   font-weight: 500;
-  cursor: pointer;
+
   transition:
     background 0.2s,
     border-color 0.2s;
@@ -334,7 +335,7 @@
   transform: translateY(-50%);
   background: none;
   border: none;
-  cursor: pointer;
+
   color: rgba(255, 255, 255, 0.3);
   padding: 4px;
   display: flex;
@@ -351,7 +352,7 @@
   border: none;
   color: rgba(139, 92, 246, 0.8);
   font-size: 13px;
-  cursor: pointer;
+
   font-family: "DM Sans", sans-serif;
   text-align: right;
   width: 100%;
@@ -372,7 +373,7 @@
   font-family: "DM Sans", sans-serif;
   font-size: 15px;
   font-weight: 600;
-  cursor: pointer;
+
   transition:
     transform 0.2s,
     box-shadow 0.2s,
@@ -422,7 +423,6 @@
 
 .auth-terms-link {
   color: rgba(139, 92, 246, 0.7);
-  cursor: pointer;
 }
 
 .auth-switch {
@@ -436,7 +436,7 @@
   background: none;
   border: none;
   color: #a855f7;
-  cursor: pointer;
+
   font-family: "DM Sans", sans-serif;
   font-size: 14px;
   font-weight: 600;

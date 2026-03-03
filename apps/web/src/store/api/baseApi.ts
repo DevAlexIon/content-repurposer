@@ -7,11 +7,10 @@ export const baseApi = createApi({
         baseUrl: import.meta.env.VITE_API_URL || 'http://localhost:3001',
         prepareHeaders: (headers, { getState }) => {
             const token = (getState() as RootState).auth.token
-            if (token) {
-                headers.set('Authorization', `Bearer ${token}`)
-            }
+            if (token) headers.set('authorization', `Bearer ${token}`)
             return headers
         },
     }),
+    tagTypes: ['Jobs'],
     endpoints: () => ({}),
 })

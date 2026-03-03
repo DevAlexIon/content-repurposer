@@ -19,15 +19,15 @@ import {
 import { logout, selectUser } from "../store/authSlice";
 import "../assets/styles/dashboard.css";
 import { useGetJobsQuery } from "../store/api/jobsApi";
+import NewProjectModal from "../components/newProjectModal";
 
-type JobStatus = "pending" | "processing" | "completed" | "failed";
-
-const FORMAT_COLORS: Record<string, string> = {
-  LinkedIn: "#0A66C2",
-  Twitter: "#1DA1F2",
-  Newsletter: "#7C3AED",
-  TikTok: "#FF0050",
-};
+type JobStatus =
+  | "pending"
+  | "processing"
+  | "completed"
+  | "failed"
+  | "done"
+  | "error";
 
 const StatusIcon = ({ status }: { status: JobStatus }) => {
   if (status === "completed")
@@ -36,6 +36,10 @@ const StatusIcon = ({ status }: { status: JobStatus }) => {
     return <Loader size={14} className="status-icon processing spin" />;
   if (status === "pending")
     return <Clock size={14} className="status-icon pending" />;
+  if (status === "done")
+    return <CheckCircle size={14} className="status-icon completed" />;
+  if (status === "error")
+    return <XCircle size={14} className="status-icon failed" />;
   return <XCircle size={14} className="status-icon failed" />;
 };
 
@@ -44,9 +48,10 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const user = useSelector(selectUser)!;
   const [hoveredJob, setHoveredJob] = useState<string | null>(null);
-  const { data: jobs = [], isLoading } = useGetJobsQuery();
-
-  console.log(user);
+  const { data: jobs = [], isLoading } = useGetJobsQuery(undefined, {
+    pollingInterval: 5000,
+  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="dash-root">
@@ -102,7 +107,7 @@ export default function Dashboard() {
           </div>
           <motion.button
             className="dash-new-btn"
-            onClick={() => navigate("/upload")}
+            onClick={() => setIsModalOpen(true)}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
@@ -125,7 +130,7 @@ export default function Dashboard() {
             },
             {
               label: "Formats Generated",
-              value: jobs.reduce((a, j) => a + j.formats.length, 0),
+              value: jobs.filter((j) => j.status === "done").length * 4,
               icon: <TrendingUp size={18} />,
               color: "#06B6D4",
             },
@@ -183,9 +188,16 @@ export default function Dashboard() {
                 jobs.map((job, i) => (
                   <motion.div
                     key={job.id}
-                    className={`dash-job-card ${hoveredJob === job.id ? "hovered" : ""}`}
+                    className={`dash-job-card ${hoveredJob === job.id ? "hovered" : ""} ${
+                      job.status === "done"
+                        ? "cursor-pointer"
+                        : "cursor-not-allowed"
+                    }`}
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
+                    onClick={() =>
+                      job.status === "done" ? navigate(`/jobs/${job.id}`) : null
+                    }
                     transition={{ delay: 0.2 + i * 0.07 }}
                     onHoverStart={() => setHoveredJob(job.id)}
                     onHoverEnd={() => setHoveredJob(null)}
@@ -196,34 +208,31 @@ export default function Dashboard() {
                         <Play size={14} fill="currentColor" />
                       </div>
                       <div>
-                        <div className="dash-job-title">{job.title}</div>
+                        <div className="dash-job-title">
+                          {job.input_text
+                            ? job.input_text.slice(0, 60) + "..."
+                            : (job.input_url ?? "Untitled")}
+                        </div>
                         <div className="dash-job-meta">
                           <span className="dash-job-type">
-                            {job.content_type}
+                            {job.input_type === "url" ? "URL" : "Text"}
                           </span>
                           <span className="dash-job-dot">·</span>
                           <span className="dash-job-time">
-                            {job.created_at}
+                            {new Date(job.created_at).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "short",
+                                day: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              },
+                            )}
                           </span>
                         </div>
                       </div>
                     </div>
                     <div className="dash-job-right">
-                      <div className="dash-job-formats">
-                        {job.formats.map((f) => (
-                          <span
-                            key={f}
-                            className="dash-format-tag"
-                            style={{
-                              background: `${FORMAT_COLORS[f]}18`,
-                              color: FORMAT_COLORS[f],
-                              borderColor: `${FORMAT_COLORS[f]}30`,
-                            }}
-                          >
-                            {f}
-                          </span>
-                        ))}
-                      </div>
                       <div className="dash-job-status">
                         <StatusIcon status={job.status} />
                         <span className={`dash-job-status-text ${job.status}`}>
@@ -239,6 +248,10 @@ export default function Dashboard() {
           </div>
         </motion.div>
       </main>
+      <NewProjectModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }
