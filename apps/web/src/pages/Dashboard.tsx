@@ -233,8 +233,10 @@ export default function Dashboard() {
                       <div>
                         <div className="dash-job-title">
                           {job.input_text
-                            ? job.input_text.slice(0, 60) + "..."
-                            : (job.input_url ?? "Untitled")}
+                            ? job.input_text.slice(0, 30) + "..."
+                            : job.input_url
+                              ? new URL(job.input_url).hostname
+                              : "Untitled"}
                         </div>
                         <div className="dash-job-meta">
                           <span className="dash-job-type">

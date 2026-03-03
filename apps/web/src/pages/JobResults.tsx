@@ -112,30 +112,30 @@ export default function JobResults() {
 
       {/* Navbar */}
       <nav className="sticky top-0 z-50 bg-[rgba(7,7,16,0.85)] backdrop-blur-xl border-b border-white/7">
-        <div className="max-w-250 mx-auto px-6 h-14.5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="max-w-250 mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <button
               onClick={() => navigate("/dashboard")}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/4 border border-white/7 text-white/50 text-xs font-semibold hover:bg-white/7 hover:text-white transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/4 border border-white/7 text-white/50 text-xs font-semibold hover:bg-white/7 hover:text-white transition-all shrink-0"
             >
               <ArrowLeft size={13} /> Dashboard
             </button>
-            <div className="w-px h-4 bg-white/7" />
-            <span className="text-sm font-semibold text-white/40 truncate max-w-75">
-              {job.input_text?.slice(0, 50)}...
+            <div className="hidden sm:block w-px h-4 bg-white/7" />
+            <span className="hidden sm:block text-sm font-semibold text-white/40 truncate max-w-50 lg:max-w-75">
+              {(job.input_text ?? job.input_url)?.slice(0, 50)}...
             </span>
           </div>
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-xs font-bold text-green-400">
+          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-xs font-bold text-green-400 shrink-0">
             <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
             Generated
           </div>
         </div>
       </nav>
 
-      <main className="max-w-250 mx-auto px-6 py-9 relative z-10 flex flex-col gap-7">
+      <main className="max-w-250 mx-auto px-4 sm:px-6 py-6 sm:py-9 relative z-10 flex flex-col gap-6 sm:gap-7">
         {/* Header */}
         <motion.div
-          className="flex items-start justify-between gap-5"
+          className="flex flex-col sm:flex-row sm:items-start justify-between gap-4"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -143,7 +143,7 @@ export default function JobResults() {
             <p className="text-xs font-semibold tracking-widest uppercase text-purple-400 flex items-center gap-2 mb-2 before:content-[''] before:w-4 before:h-px before:bg-purple-400">
               Results
             </p>
-            <h1 className="text-2xl font-extrabold mb-2">
+            <h1 className="text-xl sm:text-2xl font-extrabold mb-2">
               Your content is ready ✦
             </h1>
             <div className="flex items-center gap-2 text-xs text-white/30 flex-wrap">
@@ -165,7 +165,7 @@ export default function JobResults() {
           <button
             onClick={handleExportAll}
             disabled={exporting}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-500/10 border border-purple-500/25 text-purple-300 text-sm font-semibold hover:bg-purple-500/18 transition-all shrink-0"
+            className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-purple-500/10 border border-purple-500/25 text-purple-300 text-sm font-semibold hover:bg-purple-500/18 transition-all shrink-0 w-full sm:w-auto disabled:opacity-60"
           >
             {exporting ? (
               <div className="w-4 h-4 border-2 border-purple-300/30 border-t-purple-300 rounded-full animate-spin" />
@@ -179,7 +179,7 @@ export default function JobResults() {
 
         {/* Stats */}
         <motion.div
-          className="grid grid-cols-3 gap-3"
+          className="grid grid-cols-3 gap-2 sm:gap-3"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05 }}
@@ -199,12 +199,14 @@ export default function JobResults() {
           ].map((s) => (
             <div
               key={s.label}
-              className="bg-white/3 border border-white/7 rounded-xl p-4 text-center"
+              className="bg-white/3 border border-white/7 rounded-xl p-3 sm:p-4 text-center"
             >
-              <div className={`text-[22px] font-extrabold mb-1 ${s.color}`}>
+              <div
+                className={`text-lg sm:text-[22px] font-extrabold mb-1 ${s.color}`}
+              >
                 {s.value}
               </div>
-              <div className="text-[10px] text-white/25 font-medium uppercase tracking-wider">
+              <div className="text-[9px] sm:text-[10px] text-white/25 font-medium uppercase tracking-wider">
                 {s.label}
               </div>
             </div>
@@ -213,7 +215,7 @@ export default function JobResults() {
 
         {/* Tabs */}
         <motion.div
-          className="flex items-center gap-1 bg-white/3 border border-white/7 rounded-xl p-1 w-fit"
+          className="flex items-center gap-1 bg-white/3 border border-white/7 rounded-xl p-1 overflow-x-auto"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -222,7 +224,7 @@ export default function JobResults() {
             <button
               key={f.key}
               onClick={() => setActiveFormat(f.key)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-[9px] text-sm font-semibold transition-all border whitespace-nowrap ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-[9px] text-xs sm:text-sm font-semibold transition-all border whitespace-nowrap shrink-0 ${
                 activeFormat === f.key
                   ? "bg-purple-500/15 border-purple-500/25 text-purple-300"
                   : "border-transparent text-white/50 hover:bg-white/4 hover:text-white"
@@ -233,29 +235,28 @@ export default function JobResults() {
           ))}
         </motion.div>
 
-        {/* Content grid */}
+        {/* Content — mobile: stacked, desktop: side by side */}
         <motion.div
-          className="grid gap-5"
-          style={{ gridTemplateColumns: "1fr 300px" }}
+          className="flex flex-col lg:flex-row gap-5"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
         >
           {/* Main output */}
-          <div className="bg-[#0e0e1a] border border-white/7 rounded-[18px] overflow-hidden relative">
+          <div className="flex-1 bg-[#0e0e1a] border border-white/7 rounded-[18px] overflow-hidden relative">
             <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-purple-500/50 to-transparent" />
 
-            <div className="flex items-center justify-between px-6 py-4.5 border-b border-white/7">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-white/7">
               <div className="flex items-center gap-3">
                 <div
-                  className="w-9 h-9 rounded-[9px] flex items-center justify-center text-[17px]"
+                  className="w-9 h-9 rounded-[9px] flex items-center justify-center text-[17px] shrink-0"
                   style={{ background: "rgba(10,102,194,0.12)" }}
                 >
                   {current.icon}
                 </div>
                 <div>
-                  <div className="text-[15px] font-bold">
-                    {current.label} Post
+                  <div className="text-sm sm:text-[15px] font-bold">
+                    {current.label}
                   </div>
                   <div className="text-[11px] text-white/25 mt-0.5">
                     {current.type}
@@ -263,12 +264,9 @@ export default function JobResults() {
                 </div>
               </div>
               <div className="flex gap-2">
-                <button className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-white/4 border border-white/7 text-white/50 text-xs font-semibold hover:bg-white/7 transition-all">
-                  ✏️ Edit
-                </button>
                 <button
                   onClick={handleCopy}
-                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                     copied
                       ? "bg-green-500/10 border border-green-500/25 text-green-400"
                       : "bg-purple-500/8 border border-purple-500/20 text-purple-300 hover:bg-purple-500/15"
@@ -287,7 +285,7 @@ export default function JobResults() {
               </div>
             </div>
 
-            <div className="px-6 py-5.5 text-sm leading-[1.85] text-white/82 whitespace-pre-wrap wrap-break-word">
+            <div className="px-4 sm:px-6 py-5 text-sm leading-[1.85] text-white/80 whitespace-pre-wrap wrap-break-word">
               {content || (
                 <span className="text-white/20">
                   No content for this format.
@@ -295,23 +293,23 @@ export default function JobResults() {
               )}
             </div>
 
-            <div className="px-6 py-3 border-t border-white/7 flex items-center justify-between text-[11px] text-white/25">
-              <span>{content.length} characters</span>
+            <div className="px-4 sm:px-6 py-3 border-t border-white/7 text-[11px] text-white/25">
+              {content.length} characters
             </div>
           </div>
 
           {/* Sidebar */}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 lg:w-70 shrink-0">
             {/* Format nav */}
             <div className="bg-[#0e0e1a] border border-white/7 rounded-2xl overflow-hidden">
-              <div className="px-4.5 py-3 border-b border-white/7 text-[11px] font-semibold text-white/25 uppercase tracking-wider">
+              <div className="px-4 py-3 border-b border-white/7 text-[11px] font-semibold text-white/25 uppercase tracking-wider">
                 All Formats
               </div>
               {FORMATS.map((f) => (
                 <button
                   key={f.key}
                   onClick={() => setActiveFormat(f.key)}
-                  className={`w-full flex items-center gap-2.5 px-4.5 py-3 border-b border-white/4 last:border-0 transition-all text-left ${
+                  className={`w-full flex items-center gap-2.5 px-4 py-3 border-b border-white/4 last:border-0 transition-all text-left ${
                     activeFormat === f.key
                       ? "bg-purple-500/6"
                       : "hover:bg-white/3"
@@ -334,10 +332,10 @@ export default function JobResults() {
 
             {/* Original input */}
             <div className="bg-[#0e0e1a] border border-white/7 rounded-2xl overflow-hidden">
-              <div className="px-4.5 py-3 border-b border-white/7 text-[11px] font-semibold text-white/25 uppercase tracking-wider">
+              <div className="px-4 py-3 border-b border-white/7 text-[11px] font-semibold text-white/25 uppercase tracking-wider">
                 📄 Original Input
               </div>
-              <div className="px-4.5 py-4 text-xs leading-relaxed text-white/45 max-h-40 overflow-y-auto">
+              <div className="px-4 py-4 text-xs leading-relaxed text-white/45 max-h-40 overflow-y-auto">
                 {job.input_text ?? job.input_url}
               </div>
             </div>

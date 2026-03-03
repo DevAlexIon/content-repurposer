@@ -491,3 +491,39 @@
   cursor: pointer;
   white-space: nowrap;
 }
+
+@media (max-width: 640px) {
+  .dash-nav-inner {
+    padding: 0 16px;
+  }
+  .dash-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .dash-main {
+    padding: 24px 16px;
+  }
+
+  .dash-title {
+    font-size: 20px;
+  }
+
+  .dash-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dash-new-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dash-job-card {
+    padding: 14px 16px;
+  }
+
+  .dash-job-title {
+    font-size: 13px;
+  }
+}
