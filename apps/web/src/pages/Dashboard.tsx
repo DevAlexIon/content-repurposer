@@ -53,6 +53,31 @@ export default function Dashboard() {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  if (isLoading) {
+    return (
+      <div className="dash-root">
+        <div className="dash-blob-1" />
+        <div className="dash-blob-2" />
+        <nav className="dash-nav">
+          <div className="dash-nav-inner">
+            <div className="dash-logo">
+              <div className="dash-logo-icon">⚡</div>
+              <span className="dash-logo-text">
+                Repurposer<span>.ai</span>
+              </span>
+            </div>
+          </div>
+        </nav>
+        <div className="flex flex-col items-center justify-center min-h-[70vh] gap-4">
+          <div className="w-10 h-10 border-2 border-white/10 border-t-white rounded-full animate-spin" />
+          <p className="text-white/40 text-sm font-medium">
+            Loading your projects...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="dash-root">
       <div className="dash-blob-1" />
@@ -178,9 +203,7 @@ export default function Dashboard() {
           </div>
           <div className="dash-jobs">
             <AnimatePresence>
-              {isLoading ? (
-                <div className="dash-loading">Loading projects...</div>
-              ) : jobs.length === 0 ? (
+              {jobs.length === 0 ? (
                 <div className="dash-empty">
                   <p>No projects yet — create your first one!</p>
                 </div>
