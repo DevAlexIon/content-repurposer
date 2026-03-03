@@ -61,20 +61,20 @@ export async function generateContent(
     const openai = getOpenAI()
     const results: Partial<Record<OutputFormat, string>> = {}
 
-    await Promise.all(
-        formats.map(async (format) => {
-            const prompt = PROMPTS[format].replace('{{content}}', content)
+    for (const format of formats) {
+        const prompt = PROMPTS[format].replace('{{content}}', content)
 
-            const response = await openai.chat.completions.create({
-                model: 'llama-3.3-70b-versatile',
-                messages: [{ role: 'user', content: prompt }],
-                max_tokens: 1000,
-                temperature: 0.7
-            })
-
-            results[format] = response.choices[0].message.content ?? ''
+        const response = await openai.chat.completions.create({
+            model: 'llama-3.3-70b-versatile',
+            messages: [{ role: 'user', content: prompt }],
+            max_tokens: 1000,
+            temperature: 0.7
         })
-    )
+
+        results[format] = response.choices[0].message.content ?? ''
+
+        await new Promise(r => setTimeout(r, 2000))
+    }
 
     return results as Record<OutputFormat, string>
 }

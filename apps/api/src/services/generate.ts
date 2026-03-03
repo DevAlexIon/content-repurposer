@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import { generateContent, OutputFormat } from './ai.js'
+import { scrapeUrl } from './scrapper.js'
 
 function getSupabase() {
     return createClient(
@@ -34,10 +35,9 @@ export async function processJob(jobId: string) {
 
         let content = job.input_text
 
-        // TODO: dacă e video/audio → transcribe mai întâi
-        // if (job.input_type === 'video' || job.input_type === 'audio') {
-        //   content = await transcribeAudio(job.input_url)
-        // }
+        if (job.input_type === 'url' && job.input_url) {
+            content = await scrapeUrl(job.input_url)
+        }
 
         if (!content) throw new Error('No content to process')
 
@@ -45,15 +45,11 @@ export async function processJob(jobId: string) {
 
         await supabase
             .from('jobs')
-            .update({
-                status: 'done',
-                outputs
-            })
+            .update({ status: 'done', outputs })
             .eq('id', jobId)
 
     } catch (err) {
         console.error('Job processing error:', err)
-
         await supabase
             .from('jobs')
             .update({ status: 'error' })

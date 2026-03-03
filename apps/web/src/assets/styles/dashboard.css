@@ -377,6 +377,16 @@
   text-transform: capitalize;
 }
 
+.dash-job-status-text.done {
+  color: #10b981;
+}
+.dash-job-status-text.error {
+  color: #ef4444;
+}
+.dash-job-status-text.pending {
+  color: rgba(255, 255, 255, 0.4);
+}
+
 .dash-job-status-text.completed {
   color: #10b981;
 }
