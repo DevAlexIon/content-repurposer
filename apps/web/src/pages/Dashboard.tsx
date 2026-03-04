@@ -155,12 +155,16 @@ export default function Dashboard() {
             </p>
           </div>
           <motion.button
-            className="dash-new-btn"
-            onClick={() => setIsModalOpen(true)}
+            className={`dash-new-btn ${user.credits === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+            onClick={() =>
+              user.credits > 0 ? setIsModalOpen(true) : setIsBuyModalOpen(true)
+            }
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
-            <Plus size={18} /> New Project <Sparkles size={14} />
+            <Plus size={18} />
+            {user.credits === 0 ? "No Credits Left" : "New Project"}
+            <Sparkles size={14} />
           </motion.button>
         </motion.div>
 

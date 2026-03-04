@@ -194,7 +194,7 @@ export default function Auth() {
           </AnimatePresence>
 
           {/* Google button */}
-          <button className="google-btn" type="button">
+          {/* <button className="google-btn" type="button">
             <svg width="18" height="18" viewBox="0 0 18 18">
               <path
                 fill="#4285F4"
@@ -214,7 +214,7 @@ export default function Auth() {
               />
             </svg>
             Continue with Google
-          </button>
+          </button> */}
 
           <div className="auth-divider">or continue with email</div>
 
