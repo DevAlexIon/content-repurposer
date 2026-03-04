@@ -4,8 +4,8 @@ export async function sendWaitlistEmail(email: string) {
   const resend = new Resend(process.env.RESEND_API_KEY)
 
   await resend.emails.send({
-    from: 'Content Repurposer <onboarding@resend.dev>',
-    to: 'mr_alexandruion@icloud.com',
+    from: 'Repurposer <noreply@userepurposer.com>',
+    to: email,
     subject: "You're on the waitlist! 🎉",
     html: `
 <!DOCTYPE html>
@@ -58,7 +58,14 @@ export async function sendWaitlistEmail(email: string) {
               </table>
             </td>
           </tr>
-
+          <tr>
+            <td align="center" style="padding:0 40px 24px;">
+              <a href="https://userepurposer.com/login" 
+                style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;">
+                Try it now →
+              </a>
+            </td>
+          </tr>
           <!-- Footer -->
           <tr>
             <td align="center" style="padding:0 40px 40px;">
