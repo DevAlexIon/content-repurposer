@@ -18,8 +18,8 @@ function getSupabase() {
 }
 
 const CREDIT_PACKAGES = {
-    starter: { credits: 10, priceId: 'price_1T6zzzLePi2vt5jwN2s8rzty' },
-    pro: { credits: 50, priceId: 'price_1T7024LePi2vt5jwMia77rBz' },
+    starter: { credits: 10, priceId: 'price_1T7MkDLUl9fFkLOnuN7ucAse' },
+    pro: { credits: 50, priceId: 'price_1T7MkFLUl9fFkLOnOl8MuzDH' },
 }
 // POST /api/billing/checkout
 billingRouter.post('/checkout', async (req, res) => {
