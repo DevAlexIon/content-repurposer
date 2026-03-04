@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   Plus,
   LogOut,
@@ -16,10 +16,16 @@ import {
   Loader,
   Sparkles,
 } from "lucide-react";
-import { logout, selectUser } from "../store/authSlice";
+import {
+  logout,
+  selectToken,
+  selectUser,
+  setCredentials,
+} from "../store/authSlice";
 import "../assets/styles/dashboard.css";
 import { useGetJobsQuery } from "../store/api/jobsApi";
 import NewProjectModal from "../components/newProjectModal";
+import BuyCreditsModal from "../components/buyCreditModal";
 
 type JobStatus =
   | "pending"
@@ -52,6 +58,21 @@ export default function Dashboard() {
     pollingInterval: 5000,
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const token = useSelector(selectToken)!;
+
+  useEffect(() => {
+    if (searchParams.get("payment") !== "success") return;
+    fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((r) => r.json())
+      .then(({ user }) => {
+        if (user) dispatch(setCredentials({ user, token }));
+      });
+    setSearchParams({});
+  }, []);
 
   if (isLoading) {
     return (
@@ -92,7 +113,10 @@ export default function Dashboard() {
             </span>
           </div>
           <div className="dash-nav-right">
-            <div className="dash-credits-pill">
+            <div
+              className="dash-credits-pill cursor-pointer hover:opacity-80 transition-all"
+              onClick={() => setIsBuyModalOpen(true)}
+            >
               <Zap size={12} />
               <span>{user.credits} credits</span>
             </div>
@@ -276,6 +300,10 @@ export default function Dashboard() {
       <NewProjectModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+      <BuyCreditsModal
+        isOpen={isBuyModalOpen}
+        onClose={() => setIsBuyModalOpen(false)}
       />
     </div>
   );

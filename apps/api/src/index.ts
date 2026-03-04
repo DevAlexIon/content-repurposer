@@ -5,6 +5,7 @@ import { errorHandler } from './middleware/errorHandler.js'
 import { waitlistRouter } from './routes/waitlist.js'
 import { authRouter } from './routes/auth.js'
 import { jobsRouter } from './routes/jobs.js'
+import { billingRouter } from './routes/billing.js'
 
 dotenv.config()
 
@@ -12,6 +13,8 @@ const app = express()
 const PORT = process.env.PORT || 3001
 
 app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5173' }))
+app.use('/api/billing/webhook', express.raw({ type: 'application/json' }))
+
 app.use(express.json())
 
 app.get('/health', (req, res) => {
@@ -22,7 +25,7 @@ app.use('/api/auth', authRouter)
 app.use('/api', waitlistRouter)
 app.use('/api/jobs', jobsRouter)
 
-
+app.use('/api/billing', billingRouter)
 app.use(errorHandler)
 
 app.listen(PORT, () => {

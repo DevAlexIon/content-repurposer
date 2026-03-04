@@ -99,7 +99,17 @@ authRouter.get('/me', requireAuth, async (req, res, next) => {
             .eq('id', req.user!.id)
             .single()
 
-        res.json({ user: profile })
+        if (!profile) return res.status(404).json({ error: 'Profile not found' })
+
+        res.json({
+            user: {
+                id: profile.id,
+                email: profile.email,
+                name: profile.name,
+                credits: profile.credits,
+                plan: profile.plan
+            }
+        })
     } catch (err) {
         next(err)
     }

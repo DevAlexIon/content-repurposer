@@ -42,4 +42,8 @@ export const selectUser = (state: RootState) => {
     return state.auth.user
 }
 
+export const selectToken = (state: RootState) => {
+    return state.auth.token
+}
+
 export const { setCredentials, logout, decrementCredits } = authSlice.actions
