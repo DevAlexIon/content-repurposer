@@ -70,7 +70,7 @@ export async function sendWaitlistEmail(email: string) {
           <tr>
             <td align="center" style="padding:0 40px 40px;">
               <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.3);">
-                You're receiving this because you signed up at repurposer.ai
+              You're receiving this because you signed up at <a href="https://userepurposer.com" style="color:rgba(255,255,255,0.3);">userepurposer.com</a>
               </p>
             </td>
           </tr>

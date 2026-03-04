@@ -216,7 +216,7 @@ export default function Auth() {
             Continue with Google
           </button> */}
 
-          <div className="auth-divider">or continue with email</div>
+          {/* <div className="auth-divider">or continue with email</div> */}
 
           {/* Form */}
           <form className="auth-form" onSubmit={formik.handleSubmit}>
