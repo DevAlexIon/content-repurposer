@@ -10,7 +10,7 @@ function getOpenAI() {
 const PROMPTS = {
     linkedin_post: `You are an expert LinkedIn content creator. Transform the following content into a compelling LinkedIn post.
 Rules:
-- Maximum 1300 characters
+- 800-1300 characters (aim for the higher end)
 - Start with a strong hook (first line is crucial)
 - Use short paragraphs and line breaks
 - End with a question or CTA to drive engagement
@@ -67,8 +67,8 @@ export async function generateContent(
         const response = await openai.chat.completions.create({
             model: 'llama-3.3-70b-versatile',
             messages: [{ role: 'user', content: prompt }],
-            max_tokens: 1000,
-            temperature: 0.7
+            max_tokens: 1500,
+            temperature: 0.8
         })
 
         results[format] = response.choices[0].message.content ?? ''
