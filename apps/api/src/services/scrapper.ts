@@ -13,6 +13,7 @@ export async function scrapeUrl(url: string): Promise<string> {
         throw new Error(`Failed to scrape content from: ${url}`)
     }
 
-    return result.markdown.slice(0, 4000) // max 4000 chars
+    return result.markdown.slice(0, 8000) // 8000 chars
+
 
 }

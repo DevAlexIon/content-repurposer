@@ -7,8 +7,9 @@ body,
   min-height: 100%;
   background-color: #0f0a1e;
   overscroll-behavior: none;
+  overflow-x: hidden;
+  max-width: 100%;
 }
-
 ::-webkit-scrollbar {
   width: 6px;
 }
