@@ -88,6 +88,22 @@ authRouter.post('/login', async (req, res, next) => {
     }
 })
 
+authRouter.post('/forgot-password', async (req, res, next) => {
+    try {
+        const { email } = req.body
+        if (!email) return res.status(400).json({ error: 'Email required' })
+
+        const supabase = getSupabase()
+        await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: `${process.env.FRONTEND_URL}/reset-password`
+        })
+
+        res.json({ message: 'If this email exists, a reset link has been sent.' })
+    } catch (err) {
+        next(err)
+    }
+})
+
 // GET /api/auth/me
 authRouter.get('/me', requireAuth, async (req, res, next) => {
     try {

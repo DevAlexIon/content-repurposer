@@ -74,6 +74,15 @@ export default function Dashboard() {
     setSearchParams({});
   }, []);
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 18) return "Good afternoon";
+    return "Good evening";
+  };
+
+  const hoursSaved = jobs.filter((j) => j.status === "done").length * 3;
+
   if (isLoading) {
     return (
       <div className="dash-root">
@@ -147,8 +156,8 @@ export default function Dashboard() {
         >
           <div>
             <h1 className="dash-title">
-              Good morning, <span className="dash-title-name">{user.name}</span>{" "}
-              👋
+              {getGreeting()},{" "}
+              <span className="dash-title-name">{user.name}</span> 👋 👋
             </h1>
             <p className="dash-subtitle">
               Turn your content into multiple formats in seconds.
@@ -189,7 +198,7 @@ export default function Dashboard() {
             },
             {
               label: "Hours Saved",
-              value: "12h",
+              value: `${hoursSaved}h`,
               icon: <Clock size={18} />,
               color: "#10B981",
             },

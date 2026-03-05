@@ -7,12 +7,14 @@ import { loginSchema, signupSchema } from "../validations/auth";
 import { useDispatch } from "react-redux";
 import { useLoginMutation, useRegisterMutation } from "../store/api/authApi";
 import { setCredentials } from "../store/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 type Mode = "login" | "signup";
 
 export default function Auth() {
   const [mode, setMode] = useState<Mode>("login");
+  const [forgotSent, setForgotSent] = useState(false);
+  const [forgotLoading, setForgotLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState("");
   const [login] = useLoginMutation();
@@ -28,6 +30,22 @@ export default function Auth() {
       return true;
     }
     return false;
+  };
+
+  const handleForgotPassword = async () => {
+    const email = formik.values.email;
+    if (!email) {
+      setServerError("Enter your email first");
+      return;
+    }
+    setForgotLoading(true);
+    await fetch(`${import.meta.env.VITE_API_URL}/api/auth/forgot-password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    setForgotLoading(false);
+    setForgotSent(true);
   };
 
   const formik = useFormik({
@@ -297,8 +315,17 @@ export default function Auth() {
 
             {/* Forgot password */}
             {mode === "login" && (
-              <button type="button" className="forgot-btn">
-                Forgot password?
+              <button
+                type="button"
+                className="forgot-btn"
+                onClick={handleForgotPassword}
+                disabled={forgotLoading}
+              >
+                {forgotSent
+                  ? "✓ Reset link sent!"
+                  : forgotLoading
+                    ? "Sending..."
+                    : "Forgot password?"}
               </button>
             )}
 
@@ -323,11 +350,15 @@ export default function Auth() {
           {mode === "signup" && (
             <p className="auth-terms">
               By creating an account, you agree to our{" "}
-              <span className="auth-terms-link">Terms</span> and{" "}
-              <span className="auth-terms-link">Privacy Policy</span>
+              <Link to="/terms" className="auth-terms-link">
+                Terms
+              </Link>{" "}
+              and{" "}
+              <Link to="/privacy" className="auth-terms-link">
+                Privacy Policy
+              </Link>
             </p>
           )}
-
           {/* Switch mode */}
           <p className="auth-switch">
             {mode === "login"
