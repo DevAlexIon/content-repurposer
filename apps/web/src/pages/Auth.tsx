@@ -35,9 +35,10 @@ export default function Auth() {
   const handleForgotPassword = async () => {
     const email = formik.values.email;
     if (!email) {
-      setServerError("Enter your email first");
+      setServerError("Please enter your email address above first");
       return;
     }
+    setServerError("");
     setForgotLoading(true);
     await fetch(`${import.meta.env.VITE_API_URL}/api/auth/forgot-password`, {
       method: "POST",
@@ -271,7 +272,10 @@ export default function Auth() {
                 name="email"
                 placeholder="Email address"
                 value={formik.values.email}
-                onChange={formik.handleChange}
+                onChange={(e) => {
+                  formik.handleChange(e);
+                  if (serverError) setServerError("");
+                }}
                 onBlur={formik.handleBlur}
               />
               {formik.touched.email && formik.errors.email && (
@@ -312,21 +316,50 @@ export default function Auth() {
                 {serverError}
               </motion.p>
             )}
+            {/* Forgot success */}
+            {forgotSent && (
+              <motion.div
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  padding: "12px 16px",
+                  background: "rgba(16,185,129,0.08)",
+                  border: "1px solid rgba(16,185,129,0.2)",
+                  borderRadius: 10,
+                  color: "#10b981",
+                  fontSize: 14,
+                  marginBottom: 8,
+                }}
+              >
+                ✓ If this email exists, a reset link has been sent.
+              </motion.div>
+            )}
 
             {/* Forgot password */}
             {mode === "login" && (
-              <button
-                type="button"
-                className="forgot-btn"
-                onClick={handleForgotPassword}
-                disabled={forgotLoading}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  marginTop: -8,
+                  marginBottom: 8,
+                }}
               >
-                {forgotSent
-                  ? "✓ Reset link sent!"
-                  : forgotLoading
-                    ? "Sending..."
-                    : "Forgot password?"}
-              </button>
+                {forgotSent ? (
+                  <span style={{ fontSize: 13, color: "#10b981" }}>
+                    ✓ Check your inbox
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    className="forgot-btn"
+                    onClick={handleForgotPassword}
+                    disabled={forgotLoading}
+                  >
+                    {forgotLoading ? "Sending..." : "Forgot password?"}
+                  </button>
+                )}
+              </div>
             )}
 
             {/* Submit */}

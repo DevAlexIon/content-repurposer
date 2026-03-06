@@ -104,6 +104,30 @@ authRouter.post('/forgot-password', async (req, res, next) => {
     }
 })
 
+// POST /api/auth/reset-password
+authRouter.post('/reset-password', async (req, res, next) => {
+    try {
+        const { password, accessToken } = req.body
+        if (!password || !accessToken) {
+            return res.status(400).json({ error: 'Password and token required' })
+        }
+
+        const supabase = createClient(
+            process.env.SUPABASE_URL!,
+            process.env.SUPABASE_SECRET_KEY!,
+            { global: { headers: { Authorization: `Bearer ${accessToken}` } } }
+        )
+
+        const { error } = await supabase.auth.updateUser({ password })
+
+        if (error) return res.status(400).json({ error: error.message })
+
+        res.json({ message: 'Password updated successfully' })
+    } catch (err) {
+        next(err)
+    }
+})
+
 // GET /api/auth/me
 authRouter.get('/me', requireAuth, async (req, res, next) => {
     try {
